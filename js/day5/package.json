@@ -1,0 +1,9 @@
+{
+  "name": "advent-of-code-2016-day5-part1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "js-md5": "^0.4.1"
+  }
+}
