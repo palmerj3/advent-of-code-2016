@@ -6,7 +6,7 @@ const inputRows = inputRaw.split("\n");
 const pattern = /([a-z\-]*)([0-9]*)\[([a-z]*)\]/;
 const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
-let validrooms = inputRows
+let validroom = inputRows
 .filter((r) => r) // Remove empty rows
 .map((r) => { // Separate parts
   let p = r.match(pattern);
@@ -15,7 +15,7 @@ let validrooms = inputRows
   let checksum = p[3];
 
   return {
-    name: p[1],
+    name: p[1].slice(0,-1),
     sector: sector,
     checksum: checksum
   };
@@ -51,24 +51,24 @@ let validrooms = inputRows
   });
 })
 .filter((r) => r.valid) // Remove invalid
-.map((r) => { // Cipher name
+.filter((r) => { // Cipher name
   let chars = r.name.split('')
   .map((c) => {
     let cIndex = alphabet.indexOf(c);
     let mod = r.sector % alphabet.length;
 
-    if (cIndex === -1) {
+    if (c === '-') {
       return ' ';
     }
 
-    if (cIndex + mod > alphabet.length) {
-      return alphabet[alphabet.length - (cIndex + mod)];
-    } else {
-      return alphabet[cIndex + mod];
-    }
+    return alphabet[(cIndex + r.sector) % alphabet.length];
   }).join('');
 
-  return Object.assign(r, {name: chars});
-})
+  if (chars === 'northpole object storage') {
+    return true;
+  }
 
-validrooms.map((r) => console.log(r));
+  return false;
+});
+
+console.log(validroom[0].sector);
